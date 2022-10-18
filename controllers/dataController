@@ -1,0 +1,75 @@
+const Pokemon = require('../models/pokemon')
+
+const dataController ={
+    //index
+    index(req, res, next){
+        Pokemon.find({}, (err, allPokemon) => {
+            if(err){
+                res.status(404).send({
+                    msg: err.message    
+                })
+            } else {
+                res.locals.data.pokemons = allPokemon
+                next()
+            }
+        })
+    },
+
+    //destory
+    destroy(req, res, next){
+        Pokemon.findByIdAndDelete(req.params.id, (err, deletedPokemon) => {
+            if(err){
+                res.status(404).send({
+                    msg: err.message    
+                })
+            } else {
+                res.locals.data.pokemon =deletedPokemon
+                next()
+            }
+        })
+    },
+
+    //update
+    update(req, res, next){
+        Pokemon.findByIdAndUpdate(req.params.id, req.body, (err, updatedPokemon) => {
+            if(err){
+                res.status(404).send({
+                    msg: err.message    
+                })
+            } else {
+                res.locals.data.pokemon = updatedPokemon
+                next()
+            }
+        })
+    },
+
+    //create
+    create(req, res, next){
+        Pokemon.create(req.body, (err, createdPokemon) => {
+            if(err){
+                res.status(404).send({
+                    msg: err.message    
+                })
+            } else {
+                res.locals.data.pokemon = createdPokemon
+                next()
+            }
+        })
+    },
+
+    //showEdit
+    showEdit(req, res, next){
+        Pokemon.findById(req.params.id, (err, foundPokemon) => {
+            if(err){
+                res.status(404).send({
+                    msg: err.message    
+                })
+            } else {
+                res.locals.data.pokemon = foundPokemon
+                next()
+            }
+        })
+    }
+}
+
+module.exports = dataController
